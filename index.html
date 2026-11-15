@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src https://celestrak.org; img-src 'self' data:; style-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Orloj</title>
+<link rel="icon" href="icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="sky"></canvas>
+<canvas id="twinkle"></canvas>
+
+<main class="stage">
+  <section class="dial-wrap">
+    <canvas id="dial" aria-label="Astronomical dial"></canvas>
+  </section>
+
+  <aside class="side">
+    <header class="hello">
+      <div class="greet" id="greet"></div>
+      <div class="now"><span id="clock"></span><span class="date" id="date"></span></div>
+      <div class="place" id="place"></div>
+    </header>
+
+    <section class="focus" id="focus">
+      <div class="mode" id="mode">Focus</div>
+      <div class="remain" id="remain">25:00</div>
+      <div class="orbit" id="orbit"></div>
+      <div class="ctl">
+        <button id="go" class="gold" title="Start or pause (Space)">Begin</button>
+        <button id="reset" title="Reset (R)">Reset</button>
+        <button id="skip" title="Skip to the next (S)">Skip</button>
+      </div>
+      <div class="presets" id="presets"></div>
+    </section>
+
+    <section class="cards">
+      <div class="card" id="moonCard"><canvas id="moonIcon" width="120" height="120"></canvas><div><h3>The Moon</h3><div id="moonTxt"></div></div></div>
+      <div class="card"><h3>The Sun</h3><div id="sunTxt"></div></div>
+      <div class="card"><h3>Above you now</h3><div id="aboveTxt"></div></div>
+      <div class="card" id="eventsCard"><h3>Coming up in the sky</h3><div id="issTxt" class="iss"></div><div id="eventsTxt"></div></div>
+      <div class="card" id="statCard"><h3>Your focus</h3><div id="statTxt"></div><div class="week" id="week"></div></div>
+    </section>
+
+    <p class="cosmic" id="cosmic"></p>
+    <footer class="foot"><button id="settingsBtn" class="link">Settings</button><button id="fullBtn" class="link">Full screen (F)</button><button id="helpBtn" class="link">How to read the dial</button></footer>
+  </aside>
+</main>
+
+<div class="bell" id="bell" role="status" aria-live="polite"></div>
+
+<dialog id="settings">
+  <form method="dialog">
+    <h2>Settings</h2>
+    <label>Your name<input id="sName" maxlength="30"></label>
+    <label>Place<input id="sPlace" maxlength="40"></label>
+    <div class="row"><label>Latitude<input id="sLat" type="number" step="0.0001" min="-89" max="89"></label><label>Longitude<input id="sLon" type="number" step="0.0001" min="-180" max="180"></label></div>
+    <div class="row"><label>Focus (min)<input id="sFocus" type="number" min="1" max="240"></label><label>Short break<input id="sShort" type="number" min="1" max="60"></label><label>Long break<input id="sLong" type="number" min="1" max="90"></label></div>
+    <label class="check"><input id="sAuto" type="checkbox"> Start the next part by itself</label>
+    <label class="check"><input id="sSound" type="checkbox"> Ring the bell when a part ends</label>
+    <menu><button value="cancel">Cancel</button><button id="sSave" value="save" class="gold">Save</button></menu>
+  </form>
+</dialog>
+
+<dialog id="help">
+  <form method="dialog">
+    <h2>Reading the dial</h2>
+    <p>The dial is an astrolabe, built like the astronomical clock in Prague (1410), and set for your place. The centre is the north celestial pole; south, where the Sun stands at noon, is at the top.</p>
+    <ul>
+      <li><b>Blue</b> is the sky above your horizon. <b>Orange</b> is twilight (AURORA at dawn, CREPUSCULUM at dusk). <b>Black</b> is night.</li>
+      <li>The <b>golden hand</b> carries the Sun and points to your time on the <b>Roman ring</b>: XII at the top is noon, at the bottom midnight.</li>
+      <li>The curved golden lines with <b>1 to 12</b> are the old unequal hours: the daylight split into twelve, longer in summer, shorter in winter.</li>
+      <li>The off-centre ring is the <b>zodiac</b>, the Sun's yearly path. It turns with the stars, once a sidereal day.</li>
+      <li>The <b>Moon</b> rides its own hand and shows its real phase. The small <b>star</b> marks sidereal (star) time.</li>
+      <li>The outer gothic ring <b>1 to 24</b> is Old Bohemian time: hour 24 is sunset, so it shifts through the year.</li>
+      <li>The <b>gold band</b> round the edge is your focus session filling up. The bell rings when it is full.</li>
+      <li><b>Coming up in the sky</b> lists eclipses, meteor showers, planets meeting and the space station passing over you. When the station is up, it crosses the background sky as a moving light.</li>
+    </ul>
+    <p>Behind it is the real sky above you right now: stars, constellations, the Milky Way, the planets and the Moon.</p>
+    <p class="keys">Space start or pause · R reset · S skip · F full screen · 1, 2, 3 presets</p>
+    <menu><button value="ok" class="gold">Close</button></menu>
+  </form>
+</dialog>
+
+<script src="astro.js"></script>
+<script src="stars.js"></script>
+<script src="orloj.js"></script>
+<script src="sky.js"></script>
+<script src="events.js"></script>
+<script src="iss.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

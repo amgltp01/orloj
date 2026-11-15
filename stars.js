@@ -1,0 +1,61 @@
+'use strict';
+// The bright stars (J2000: right ascension in hours, declination in degrees, magnitude, distance in light years
+// where it is well known) and the lines of the best-known constellations.
+(function (root) {
+  const S = {
+    Sirius: [6.7525, -16.716, -1.46, 8.6], Canopus: [6.3992, -52.696, -0.74, 310], Arcturus: [14.2610, 19.182, -0.05, 37],
+    RigilKent: [14.6600, -60.834, -0.27, 4.4], Vega: [18.6156, 38.784, 0.03, 25], Capella: [5.2782, 45.998, 0.08, 43],
+    Rigel: [5.2423, -8.202, 0.13, 860], Procyon: [7.6550, 5.225, 0.34, 11.5], Achernar: [1.6286, -57.237, 0.46, 139],
+    Betelgeuse: [5.9195, 7.407, 0.5, 550], Hadar: [14.0637, -60.373, 0.61, 390], Altair: [19.8464, 8.868, 0.76, 16.7],
+    Acrux: [12.4433, -63.099, 0.76, 320], Aldebaran: [4.5987, 16.509, 0.86, 65], Antares: [16.4901, -26.432, 0.96, 550],
+    Spica: [13.4199, -11.161, 0.97, 250], Pollux: [7.7553, 28.026, 1.14, 34], Fomalhaut: [22.9608, -29.622, 1.16, 25],
+    Deneb: [20.6905, 45.280, 1.25, 2600], Mimosa: [12.7954, -59.689, 1.25, 280], Regulus: [10.1395, 11.967, 1.35, 79],
+    Adhara: [6.9771, -28.972, 1.5], Castor: [7.5767, 31.888, 1.58, 51], Shaula: [17.5601, -37.104, 1.62], Gacrux: [12.5194, -57.113, 1.63],
+    Bellatrix: [5.4189, 6.350, 1.64], Elnath: [5.4382, 28.608, 1.65], Alnilam: [5.6036, -1.202, 1.69], Alnitak: [5.6793, -1.943, 1.77],
+    Mintaka: [5.5334, -0.299, 2.23], Saiph: [5.7959, -9.670, 2.06], Meissa: [5.5856, 9.934, 3.4],
+    Alioth: [12.9005, 55.960, 1.77], Dubhe: [11.0621, 61.751, 1.79], Merak: [11.0307, 56.382, 2.37], Phecda: [11.8972, 53.695, 2.44],
+    Megrez: [12.2571, 57.033, 3.31], Mizar: [13.3988, 54.925, 2.23], Alkaid: [13.7923, 49.313, 1.86],
+    Mirfak: [3.4054, 49.861, 1.79], Algol: [3.1361, 40.956, 2.1], Wezen: [7.1399, -26.393, 1.83], Aludra: [7.4016, -29.303, 2.45], Mirzam: [6.3783, -17.956, 1.98],
+    Sargas: [17.6219, -42.998, 1.86], KausAustralis: [18.4029, -34.385, 1.85], Menkalinan: [5.9921, 44.948, 1.9], Alhena: [6.6285, 16.399, 1.93],
+    Polaris: [2.5303, 89.264, 1.98, 433], Alphard: [9.4598, -8.659, 1.99], Hamal: [2.1196, 23.462, 2.0], Diphda: [0.7265, -17.987, 2.04],
+    Nunki: [18.9211, -26.297, 2.05], Alpheratz: [0.1398, 29.090, 2.06], Mirach: [1.1622, 35.621, 2.05], Almach: [2.0650, 42.330, 2.1],
+    Kochab: [14.8451, 74.156, 2.08], Pherkad: [15.3455, 71.834, 3.0], Yildun: [17.5369, 86.586, 4.4], EpsUMi: [16.7662, 82.037, 4.2], ZetaUMi: [15.7343, 77.795, 4.3], EtaUMi: [16.2918, 75.755, 5.0],
+    Rasalhague: [17.5822, 12.560, 2.08], Denebola: [11.8177, 14.572, 2.14], Algieba: [10.3329, 19.842, 2.08], Zosma: [11.2351, 20.524, 2.56],
+    Chertan: [11.2373, 15.430, 3.33], EtaLeo: [10.1222, 16.763, 3.5], Adhafera: [10.2782, 23.417, 3.4], Rasalas: [9.8794, 26.007, 3.88],
+    Caph: [0.1530, 59.150, 2.28], Schedar: [0.6751, 56.537, 2.24], Navi: [0.9451, 60.717, 2.15], Ruchbah: [1.4303, 60.235, 2.68], Segin: [1.9066, 63.670, 3.35],
+    Sadr: [20.3705, 40.257, 2.23], GienahCyg: [20.7702, 33.970, 2.48], DeltaCyg: [19.7496, 45.131, 2.87], Albireo: [19.5120, 27.960, 3.08],
+    Eltanin: [17.9434, 51.489, 2.24], Enif: [21.7364, 9.875, 2.39], Scheat: [23.0629, 28.083, 2.42], Markab: [23.0793, 15.205, 2.49], Algenib: [0.2206, 15.184, 2.83],
+    Sheliak: [18.8347, 33.363, 3.5], Sulafat: [18.9824, 32.690, 3.25], ZetaLyr: [18.7462, 37.605, 4.3], DeltaLyr: [18.9084, 36.899, 4.3],
+    Dschubba: [16.0056, -22.622, 2.29], Acrab: [16.0906, -19.806, 2.62], PiSco: [15.9809, -26.114, 2.89], SigmaSco: [16.3531, -25.593, 2.89],
+    TauSco: [16.5980, -28.216, 2.82], EpsSco: [16.8361, -34.293, 2.29], MuSco: [16.8645, -38.047, 3.0], ZetaSco: [16.9097, -42.362, 3.6],
+    EtaSco: [17.2025, -43.239, 3.33], IotaSco: [17.7930, -40.127, 3.0], KappaSco: [17.7081, -39.030, 2.41],
+    Mebsuta: [6.7322, 25.131, 3.0], Tejat: [6.3827, 22.514, 2.9], Wasat: [7.3354, 21.982, 3.5], Propus: [6.2479, 22.507, 3.3],
+    ZetaTau: [5.6274, 21.143, 3.0], Ain: [4.4769, 19.180, 3.5], Alcyone: [3.7914, 24.105, 2.87], GammaTau: [4.3299, 15.628, 3.65], DeltaTau: [4.3824, 17.543, 3.76],
+    Tarazed: [19.7710, 10.613, 2.72], Alshain: [19.9219, 6.407, 3.7], DeltaAnd: [0.6555, 30.861, 3.27], DeltaCru: [12.2524, -58.749, 2.8],
+    Izar: [14.7498, 27.074, 2.37], Muphrid: [13.9114, 18.398, 2.68], Seginus: [14.5346, 38.308, 3.03], Nekkar: [15.0324, 40.390, 3.5], DeltaBoo: [15.2584, 33.315, 3.47],
+    Ascella: [19.0435, -29.880, 2.6], KausMedia: [18.3499, -29.828, 2.7], KausBorealis: [18.4662, -25.422, 2.8], Alnasl: [18.0968, -30.424, 2.98],
+    PhiSgr: [18.7609, -26.991, 3.17], TauSgr: [19.1157, -27.671, 3.3],
+  };
+  const NAMES = { RigilKent: 'Rigil Kentaurus', KausAustralis: 'Kaus Australis', GienahCyg: 'Gienah' };
+  const LINES = {
+    Orion: [['Betelgeuse', 'Bellatrix'], ['Betelgeuse', 'Alnitak'], ['Bellatrix', 'Mintaka'], ['Alnitak', 'Alnilam'], ['Alnilam', 'Mintaka'], ['Alnitak', 'Saiph'], ['Mintaka', 'Rigel'], ['Betelgeuse', 'Meissa'], ['Bellatrix', 'Meissa']],
+    'Ursa Major': [['Dubhe', 'Merak'], ['Merak', 'Phecda'], ['Phecda', 'Megrez'], ['Megrez', 'Dubhe'], ['Megrez', 'Alioth'], ['Alioth', 'Mizar'], ['Mizar', 'Alkaid']],
+    'Ursa Minor': [['Polaris', 'Yildun'], ['Yildun', 'EpsUMi'], ['EpsUMi', 'ZetaUMi'], ['ZetaUMi', 'Kochab'], ['Kochab', 'Pherkad'], ['Pherkad', 'EtaUMi'], ['EtaUMi', 'ZetaUMi']],
+    Cassiopeia: [['Caph', 'Schedar'], ['Schedar', 'Navi'], ['Navi', 'Ruchbah'], ['Ruchbah', 'Segin']],
+    Cygnus: [['Deneb', 'Sadr'], ['Sadr', 'Albireo'], ['DeltaCyg', 'Sadr'], ['Sadr', 'GienahCyg']],
+    Lyra: [['Vega', 'ZetaLyr'], ['ZetaLyr', 'Sheliak'], ['Sheliak', 'Sulafat'], ['Sulafat', 'DeltaLyr'], ['DeltaLyr', 'ZetaLyr']],
+    Aquila: [['Tarazed', 'Altair'], ['Altair', 'Alshain']],
+    Pegasus: [['Markab', 'Scheat'], ['Scheat', 'Alpheratz'], ['Alpheratz', 'Algenib'], ['Algenib', 'Markab'], ['Markab', 'Enif']],
+    Andromeda: [['Alpheratz', 'DeltaAnd'], ['DeltaAnd', 'Mirach'], ['Mirach', 'Almach']],
+    Perseus: [['Mirfak', 'Algol']],
+    Leo: [['Regulus', 'EtaLeo'], ['EtaLeo', 'Algieba'], ['Algieba', 'Adhafera'], ['Adhafera', 'Rasalas'], ['Algieba', 'Zosma'], ['Zosma', 'Denebola'], ['Denebola', 'Chertan'], ['Chertan', 'Regulus'], ['Chertan', 'Zosma']],
+    Gemini: [['Castor', 'Pollux'], ['Castor', 'Mebsuta'], ['Mebsuta', 'Tejat'], ['Tejat', 'Propus'], ['Pollux', 'Wasat'], ['Wasat', 'Alhena']],
+    Taurus: [['Aldebaran', 'DeltaTau'], ['DeltaTau', 'GammaTau'], ['GammaTau', 'Ain'], ['Ain', 'Elnath'], ['Aldebaran', 'ZetaTau']],
+    'Canis Major': [['Sirius', 'Mirzam'], ['Sirius', 'Adhara'], ['Adhara', 'Wezen'], ['Wezen', 'Aludra']],
+    Scorpius: [['Acrab', 'Dschubba'], ['Dschubba', 'PiSco'], ['Dschubba', 'SigmaSco'], ['SigmaSco', 'Antares'], ['Antares', 'TauSco'], ['TauSco', 'EpsSco'], ['EpsSco', 'MuSco'], ['MuSco', 'ZetaSco'], ['ZetaSco', 'EtaSco'], ['EtaSco', 'Sargas'], ['Sargas', 'IotaSco'], ['IotaSco', 'KappaSco'], ['KappaSco', 'Shaula']],
+    Sagittarius: [['KausAustralis', 'KausMedia'], ['KausMedia', 'KausBorealis'], ['KausBorealis', 'PhiSgr'], ['PhiSgr', 'Nunki'], ['Nunki', 'TauSgr'], ['TauSgr', 'Ascella'], ['Ascella', 'PhiSgr'], ['Ascella', 'KausAustralis'], ['KausMedia', 'Alnasl'], ['Alnasl', 'KausAustralis']],
+    Crux: [['Acrux', 'Gacrux'], ['Mimosa', 'DeltaCru']],
+    Bootes: [['Arcturus', 'Izar'], ['Izar', 'DeltaBoo'], ['DeltaBoo', 'Nekkar'], ['Nekkar', 'Seginus'], ['Seginus', 'Arcturus'], ['Arcturus', 'Muphrid']],
+  };
+  root.Stars = { S, NAMES, LINES, label: k => NAMES[k] || k };
+})(typeof window !== 'undefined' ? window : globalThis);
