@@ -1,5 +1,7 @@
 # Orloj
 
+![Orloj at 21:00 on 25 November in Lisbon: full Moon rising, Saturn up](docs/screenshot.png)
+
 A focus clock built like the Prague astronomical clock (1410), set for Lisbon and worked out live from real astronomy.
 
 Open `index.html` in any browser. Nothing to install; the internet is only used to fetch the space station's orbit.
